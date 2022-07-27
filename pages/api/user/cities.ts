@@ -9,13 +9,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { UserType } from "../../../types";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-    
     checkAuth(req.body.token);
     
     // Get user favorite cities
     if (req.method === "GET") {
         try {
-            const user: UserType | null = await User.findOne({ email: req.body.email });
+            const user: UserType | null = await User.findOne({ email: req.query.email });
             if (!user) return res.json({ code: 0, cities: [] });
             return res.json({
                 code: 1,

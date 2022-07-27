@@ -7,3 +7,13 @@ export type UserType = {
     password: string
     cities: string[]
 }
+
+export type Response = {
+    code: 0 | 1
+    message: string
+}
+
+export type AuthResponse = Response & {
+    _id: string
+    token: string
+}
