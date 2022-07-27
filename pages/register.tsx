@@ -52,7 +52,6 @@ export default function Register() {
 
         try {
             const response: AuthResponse = await (await axios.post(`${APIURL}/user/register`, { email, password })).data;
-            console.log(response)
             setLoading(false);
     
             if (response.code === 0) {
@@ -63,7 +62,7 @@ export default function Register() {
                 setError(null);
                 setUser({ _id: response._id, token: response.token, cities: [] });
                 localStorage.setItem('token',response.token);
-                // router.push('/');
+                router.push('/');
             }
         }
         catch {
