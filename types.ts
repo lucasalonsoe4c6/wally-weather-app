@@ -2,11 +2,17 @@ import { Types } from "mongoose"
 
 export type UserType = {
     _id: Types.ObjectId
-    token?: string
-    email: string
-    password: string
+    token: string
+    email?: string
+    password?: string
     cities: string[]
 }
+
+export type DecodedTokenProperties = {
+    exp: number
+}
+
+export type DecodedTokenType = UserType & DecodedTokenProperties;
 
 export type Response = {
     code: 0 | 1
@@ -14,6 +20,6 @@ export type Response = {
 }
 
 export type AuthResponse = Response & {
-    _id: string
+    _id: Types.ObjectId
     token: string
 }

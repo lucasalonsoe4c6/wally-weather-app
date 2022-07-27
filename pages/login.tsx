@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
+import { GlobalContext } from '../context';
+import { useRouter } from 'next/router';
 // Components
 import { Head } from '../components'
 import { Button, Card, Container, Form, Spinner } from 'react-bootstrap'
@@ -10,6 +12,11 @@ import { AuthResponse } from '../types';
 import { validateEmail, validatePassword } from '../utils';
 
 export default function Login() {
+    const router = useRouter();
+
+    const { user, setUser } = useContext(GlobalContext);
+    if (user) router.push('/');
+
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
@@ -46,14 +53,16 @@ export default function Login() {
         try {
             const response: AuthResponse = await (await axios.post(`${APIURL}/user/login`, { email, password })).data;
             setLoading(false);
-    
+
             if (response.code === 0) {
                 setError(response.message);
             };
-    
+
             if (response.code === 1) {
                 setError(null);
-                console.log(response)
+                setUser({ _id: response._id, token: response.token, cities: [] });
+                localStorage.setItem('token',response.token);
+                router.push('/');
             }
         }
         catch {
