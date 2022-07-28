@@ -71,7 +71,7 @@ export default function Home(props: Props) {
                     setCities(response.cities);
                 }
                 catch {
-                    setData({ ...data, code: 0, message: "There was an error while fetching cities" });
+                    setData(data => ({ ...data, code: 0, message: "There was an error while fetching cities" }));
                 }
             })();
         }
@@ -84,7 +84,7 @@ export default function Home(props: Props) {
             <Header />
             <main className="p-5">
                 <Container>
-                    <h1>There's been an error. Please try again</h1>
+                    <h1>There&apos;s been an error. Please try again</h1>
                     <p>{message}</p>
                     <Button type="button" variant="primary" onClick={handleReload}>Refresh page</Button>
                 </Container>

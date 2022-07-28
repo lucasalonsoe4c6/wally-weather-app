@@ -72,7 +72,7 @@ export default function Register() {
 
     useEffect(() => {
         if (submitted) validateFields();
-    }, [submitted, email, password]);
+    }, [submitted, email, password, validateFields]);
 
     return (
         <>
