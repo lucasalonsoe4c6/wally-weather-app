@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { GlobalContext } from '../context';
 import { useRouter } from 'next/router';
@@ -26,7 +26,7 @@ export default function Login() {
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
 
-    const validateFields = (): boolean => {
+    const validateFields = useCallback((): boolean => {
         const emailValidation = validateEmail(email);
         if (emailValidation.code === 0) {
             setError(emailValidation.message);
@@ -41,7 +41,7 @@ export default function Login() {
         }
         setError(null);
         return true;
-    };
+    }, [email, password]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -111,7 +111,7 @@ export default function Login() {
                             {error && !loading && <Card.Text className="text-danger">{error}</Card.Text>}
                         </Card.Body>
                         <Card.Footer>
-                            <Card.Text>Don't have an account?</Card.Text>
+                            <Card.Text>Don&apos;t have an account?</Card.Text>
                             <Card.Link href="/register">Register</Card.Link>
                         </Card.Footer>
                     </Card>

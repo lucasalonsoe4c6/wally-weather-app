@@ -57,7 +57,7 @@ export default function Home(props: Props) {
             setCities([...cities, city]);
         }
         catch {
-            setData({ ...data, code: 0, message: "There was an error while saving city" });
+            setData(data => ({ ...data, code: 0, message: "There was an error while saving city" }));
         }
     };
 
