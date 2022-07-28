@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken';
 
 beforeEach(() => {
-    localStorage.clear()
-    cy.visit('http://localhost:5000/login');
+    localStorage.clear();
+    cy.visit('http://localhost:5000/register');
 });
 
 describe('Field validation', () => {
     it('Shows error while submitting empty fields', () => {
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
         cy.get('p.text-danger')
             .should('exist')
@@ -19,7 +19,7 @@ describe('Field validation', () => {
         cy.get('input[type="email"]')
             .type('Whatever@abc');
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
         cy.get('p.text-danger')
             .should('exist')
@@ -32,7 +32,7 @@ describe('Field validation', () => {
         cy.get('input[type="password"]')
             .type('abc');
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
         cy.get('p.text-danger')
             .should('exist')
@@ -44,7 +44,7 @@ describe('Field validation', () => {
         cy.get('input[type="password"]')
             .type('superlongpasswordthatshouldfailthetest');
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
         cy.get('p.text-danger')
             .should('exist')
@@ -52,48 +52,48 @@ describe('Field validation', () => {
     });
 });
 
-describe('Failed login', () => {
-    it('Shows error when login fails', () => {
-        cy.intercept('POST', 'http://localhost:5000/api/user/login', {
-            body: { code: 0, message: 'User not found' }
-        }).as('login');
+describe('Failed Register', () => {
+    it('Shows error when Register fails', () => {
+        cy.intercept('POST', 'http://localhost:5000/api/user/register', {
+            body: { code: 0, message: 'Error' }
+        }).as('Register');
 
         cy.get('input[type="email"]')
             .type('someemailthatshouldnotexistasauser@gmail.com');
         cy.get('input[type="password"]')
             .type('password');
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
 
-        cy.wait('@login');
+        cy.wait('@Register');
 
         cy.get('p.text-danger')
             .should('exist')
-            .and('have.text', 'User not found');
+            .and('have.text', 'Error');
     });
 });
 
-describe('Succesful login', () => {
-    it('Logins successfully and redirects to home', () => {
+describe('Succesful Register', () => {
+    it('Registers successfully and redirects to home', () => {
         const token = jwt.sign({
             _id: '123456',
             email: 'someemail@gmail.com',
         }, 'testkey', { expiresIn: '1h' });
 
-        cy.intercept('POST', 'http://localhost:5000/api/user/login', {
+        cy.intercept('POST', 'http://localhost:5000/api/user/register', {
             body: { code: 1, message: '', token }
-        }).as('login');
+        }).as('Register');
 
         cy.get('input[type="email"]')
             .type('someemailthatshouldnotexistasauser@gmail.com');
         cy.get('input[type="password"]')
             .type('password');
         cy.get('button')
-            .should('have.text', 'Login')
+            .should('have.text', 'Register')
             .click();
 
-        cy.wait('@login');
+        cy.wait('@Register');
 
         cy.url().should('match', /\/$/);
         cy.get('a.nav-link').should('have.text', 'Logout');
