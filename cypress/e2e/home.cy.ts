@@ -1,7 +1,7 @@
 import { WeatherResponse } from "../../types";
 
 before(() => {
-    cy.visit('http://localhost:5000/login');
+    cy.visit('https://wally-weather-app.vercel.app/login');
     cy.get('input[type="email"]')
         .type('mycoolemail@gmail.com');
     cy.get('input[type="password"]')
@@ -14,7 +14,7 @@ before(() => {
 
 describe('Home', () => {
     it('Should display server side data', () => {
-        cy.visit('http://localhost:5000/')
+        cy.visit('https://wally-weather-app.vercel.app/')
             .its('__NEXT_DATA__.props.pageProps')
             .then((props: { data: WeatherResponse }) => {
                 expect(props.data).to.haveOwnProperty('code');
@@ -60,9 +60,9 @@ describe('Home', () => {
             });
     });
     it('Should fetch new data', () => {
-        cy.intercept('POST', 'http://localhost:5000/api/weather/current*').as('getWeather');
+        cy.intercept('POST', 'https://wally-weather-app.vercel.app/api/weather/current*').as('getWeather');
 
-        cy.visit('http://localhost:5000/');
+        cy.visit('https://wally-weather-app.vercel.app/');
 
         cy.get('input[type="text"]').clear().type('Paris');
         cy.get('button[type="submit"]').should('have.text', 'Check weather').click();
@@ -71,12 +71,12 @@ describe('Home', () => {
         cy.get('div.card-title.h5').eq(1).should('contain', 'Paris');
     });
     it('Should add city to favourites', () => {
-        cy.intercept('GET', 'http://localhost:5000/api/user/cities*', {
+        cy.intercept('GET', 'https://wally-weather-app.vercel.app/api/user/cities*', {
             code: 1, message: '', cities: []
         }).as('getCities')
-        cy.intercept('POST', 'http://localhost:5000/api/user/cities*').as('addCity');
+        cy.intercept('POST', 'https://wally-weather-app.vercel.app/api/user/cities*').as('addCity');
 
-        cy.visit('http://localhost:5000/');
+        cy.visit('https://wally-weather-app.vercel.app/');
 
         cy.get('button[data-testid="add-fav-btn"]')
             .should('have.text', 'Add to favourites')
@@ -88,12 +88,12 @@ describe('Home', () => {
         cy.get('div.card-body').last().find('p').should('contain.text', 'New York');
     });
     it('Should remove city from favourites', () => {
-        cy.intercept('GET', 'http://localhost:5000/api/user/cities*', {
+        cy.intercept('GET', 'https://wally-weather-app.vercel.app/api/user/cities*', {
             code: 1, message: '', cities: ['New York']
         }).as('getCities')
-        cy.intercept('DELETE', 'http://localhost:5000/api/user/cities*').as('deleteCity');
+        cy.intercept('DELETE', 'https://wally-weather-app.vercel.app/api/user/cities*').as('deleteCity');
 
-        cy.visit('http://localhost:5000/');
+        cy.visit('https://wally-weather-app.vercel.app/');
 
         cy.get('button.btn-danger')
             .should('contain.text', 'Remove')

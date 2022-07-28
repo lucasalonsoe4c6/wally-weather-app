@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 beforeEach(() => {
     localStorage.clear();
-    cy.visit('http://localhost:5000/register');
+    cy.visit('https://wally-weather-app.vercel.app/register');
 });
 
 describe('Field validation', () => {
@@ -54,7 +54,7 @@ describe('Field validation', () => {
 
 describe('Failed Register', () => {
     it('Shows error when Register fails', () => {
-        cy.intercept('POST', 'http://localhost:5000/api/user/register', {
+        cy.intercept('POST', 'https://wally-weather-app.vercel.app/api/user/register', {
             body: { code: 0, message: 'Error' }
         }).as('Register');
 
@@ -81,7 +81,7 @@ describe('Succesful Register', () => {
             email: 'someemail@gmail.com',
         }, 'testkey', { expiresIn: '1h' });
 
-        cy.intercept('POST', 'http://localhost:5000/api/user/register', {
+        cy.intercept('POST', 'https://wally-weather-app.vercel.app/api/user/register', {
             body: { code: 1, message: '', token }
         }).as('Register');
 
