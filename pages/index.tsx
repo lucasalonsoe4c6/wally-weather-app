@@ -123,7 +123,7 @@ export default function Home(props: Props) {
                                     <Card.Title>{location.name} - {location.country}</Card.Title>
                                     <Card.Subtitle className="mb-2">Current Weather</Card.Subtitle>
                                     {isLoggedIn &&
-                                        <Button type="button" onClick={handleAdd}>Add to favourites</Button>
+                                        <Button type="button" onClick={handleAdd} data-testid="add-fav-btn">Add to favourites</Button>
                                     }
                                 </Card.Header>
                                 <Card.Body className="d-flex flex-column align-items-center justify-content-start">
