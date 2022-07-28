@@ -67,7 +67,7 @@ export default function Home(props: Props) {
             (async () => {
                 try {
                     const response = await (await axios.get(`${APIURL}/user/cities?token=${user?.token}&email=${user.email}`)).data;
-                    if (response.code === 0) setData({ ...data, code: 0, message: response.message });
+                    if (response.code === 0) setData(data => ({ ...data, code: 0, message: response.message }));
                     setCities(response.cities);
                 }
                 catch {
