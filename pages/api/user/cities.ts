@@ -9,10 +9,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { UserType } from "../../../types";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-    checkAuth(req.body.token);
     
     // Get user favorite cities
     if (req.method === "GET") {
+        checkAuth(req.query.token as string);
         try {
             const user: UserType | null = await User.findOne({ email: req.query.email });
             if (!user) return res.json({ code: 0, cities: [] });
@@ -28,6 +28,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // Add city to favorites
     if (req.method === "POST") {
+        checkAuth(req.body.token);
         try {
             const user: UserType | null = await User.findOne({ email: req.body.email });
             if (!user) return res.json({ code: 0, message: "User not found" });
@@ -45,6 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // Delete city from favorites
     if (req.method === "DELETE") {
+        checkAuth(req.query.token as string);
         try {
             const user: UserType | null = await User.findOne({ email: req.body.email });
             if (!user) return res.json({ code: 0, message: "User not found" });

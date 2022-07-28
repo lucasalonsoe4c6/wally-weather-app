@@ -24,6 +24,7 @@ function getInitialState() {
             return {
                 _id: decodedToken._id,
                 token,
+                email: decodedToken.email,
                 cities: []
             }
         }

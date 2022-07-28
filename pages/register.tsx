@@ -60,7 +60,7 @@ export default function Register() {
     
             if (response.code === 1) {
                 setError(null);
-                setUser({ _id: response._id, token: response.token, cities: [] });
+                setUser({ _id: response._id, token: response.token, email, cities: [] });
                 localStorage.setItem('token',response.token);
                 router.push('/');
             }
